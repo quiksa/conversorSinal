@@ -34,7 +34,7 @@ public class Conversor {
         }
         System.out.println("'" + txt + "' to binary: " + binary);
 
-        p = AMI(binary);
+        p = PSEUDOTERNARY(binary);
 
         return p;
     }
@@ -378,7 +378,7 @@ public class Conversor {
                 listPontos.add(p5);
 
                 pontos p6 = new pontos();
-                p6.setX(x+1);
+                p6.setX(x + 1);
                 p6.setY(1);
                 listPontos.add(p6);
                 bool = true;
@@ -389,7 +389,7 @@ public class Conversor {
                 listPontos.add(p7);
 
                 pontos p8 = new pontos();
-                p8.setX(x+1);
+                p8.setX(x + 1);
                 p8.setY(-1);
                 listPontos.add(p8);
                 bool = false;
@@ -398,7 +398,7 @@ public class Conversor {
         }
         return listPontos;
     } //quase pronto
-    
+
     public ArrayList<pontos> PSEUDOTERNARY(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
@@ -411,44 +411,174 @@ public class Conversor {
             //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
 
             if (bits.charAt(x) == '0') {
+                //verifica se bool = false, se sim, cria pontos acima de 0v
+                if (bool == false) {
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(1);
+                    listPontos.add(p1);
 
-                pontos p1 = new pontos();
-                p1.setX(x);
-                p1.setY(0);
-                listPontos.add(p1);
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(1);
+                    listPontos.add(p2);
+                    bool = true;
 
-                pontos p2 = new pontos();
-                p2.setX(x + 1);
-                p2.setY(0);
-                listPontos.add(p2);
+                } else {
+                    //cria pontos abaixo de 0v
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(-1);
+                    listPontos.add(p1);
 
-            } else if (bool == false) {
-                pontos p5 = new pontos();
-                p5.setX(x);
-                p5.setY(1);
-                listPontos.add(p5);
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(-1);
+                    listPontos.add(p2);
+                    
+                    pontos p3 = new pontos();
+                    p3.setX(x + 1);
+                    p3.setY(0);
+                    listPontos.add(p3);
+                    bool = false;
+                }
 
-                pontos p6 = new pontos();
-                p6.setX(x+1);
-                p6.setY(1);
-                listPontos.add(p6);
-                bool = true;
             } else {
-                pontos p7 = new pontos();
-                p7.setX(x);
-                p7.setY(-1);
-                listPontos.add(p7);
+                // cria pontos 0v
+                pontos p3 = new pontos();
+                p3.setX(x);
+                p3.setY(0);
+                listPontos.add(p3);
 
-                pontos p8 = new pontos();
-                p8.setX(x+1);
-                p8.setY(-1);
-                listPontos.add(p8);
-                bool = false;
+                pontos p4 = new pontos();
+                p4.setX(x + 1);
+                p4.setY(0);
+                listPontos.add(p4);
+            }
+
+        }
+        return listPontos;
+    } 
+    
+     public ArrayList<pontos> _4B5B(StringBuilder bt) {
+        ArrayList<pontos> listPontos = new ArrayList<>();
+
+        String bits = "0011011001";
+        //bt.toString();
+
+        boolean bool = false;
+        for (int x = 0; x < bits.length(); x++) {
+            System.out.println("bit posicao x: " + bits.charAt(x));
+            //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
+
+            if (bits.charAt(x) == '0') {
+                //verifica se bool = false, se sim, cria pontos acima de 0v
+                if (bool == false) {
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(1);
+                    listPontos.add(p1);
+
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(1);
+                    listPontos.add(p2);
+                    bool = true;
+
+                } else {
+                    //cria pontos abaixo de 0v
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(-1);
+                    listPontos.add(p1);
+
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(-1);
+                    listPontos.add(p2);
+                    
+                    pontos p3 = new pontos();
+                    p3.setX(x + 1);
+                    p3.setY(0);
+                    listPontos.add(p3);
+                    bool = false;
+                }
+
+            } else {
+                // cria pontos 0v
+                pontos p3 = new pontos();
+                p3.setX(x);
+                p3.setY(0);
+                listPontos.add(p3);
+
+                pontos p4 = new pontos();
+                p4.setX(x + 1);
+                p4.setY(0);
+                listPontos.add(p4);
             }
 
         }
         return listPontos;
     } //terminar
-    
-    
+     
+     public ArrayList<pontos> _2B1Q(StringBuilder bt) {
+        ArrayList<pontos> listPontos = new ArrayList<>();
+
+        String bits = "010010";
+        //bt.toString();
+
+        boolean bool = false;
+        for (int x = 0; x < bits.length(); x++) {
+            System.out.println("bit posicao x: " + bits.charAt(x));
+            //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
+
+            if (bits.charAt(x) == '0') {
+                //verifica se bool = false, se sim, cria pontos acima de 0v
+                if (bool == false) {
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(1);
+                    listPontos.add(p1);
+
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(1);
+                    listPontos.add(p2);
+                    bool = true;
+
+                } else {
+                    //cria pontos abaixo de 0v
+                    pontos p1 = new pontos();
+                    p1.setX(x);
+                    p1.setY(-1);
+                    listPontos.add(p1);
+
+                    pontos p2 = new pontos();
+                    p2.setX(x + 1);
+                    p2.setY(-1);
+                    listPontos.add(p2);
+                    
+                    pontos p3 = new pontos();
+                    p3.setX(x + 1);
+                    p3.setY(0);
+                    listPontos.add(p3);
+                    bool = false;
+                }
+
+            } else {
+                // cria pontos 0v
+                pontos p3 = new pontos();
+                p3.setX(x);
+                p3.setY(0);
+                listPontos.add(p3);
+
+                pontos p4 = new pontos();
+                p4.setX(x + 1);
+                p4.setY(0);
+                listPontos.add(p4);
+            }
+
+        }
+        return listPontos;
+    } //terminar
 }

@@ -7,6 +7,8 @@ package converter;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
@@ -26,11 +28,29 @@ import org.jfree.ui.RefineryUtilities;
  * @author Guilherme
  */
 public class frame1 extends javax.swing.JFrame {
-    
-  
+
+    String metodo;
 
     public frame1() {
         initComponents();
+
+        ComboBox.removeAllItems();
+        ComboBox.addItem("NRZ-L");
+        ComboBox.addItem("NRZ-I");
+        ComboBox.addItem("RZ");
+        ComboBox.addItem("AMI");
+        ComboBox.addItem("PSEUDOTERNARY");
+        ComboBox.addItem("MANCHESTER");
+        ComboBox.addItem("DIFFERENTIAL MANCHESTER");
+        ComboBox.addItem("4B/5B");
+        ComboBox.addItem("2B/1Q");
+
+        ComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                metodo = ComboBox.getSelectedItem().toString();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -42,6 +62,7 @@ public class frame1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         ComboBox = new javax.swing.JComboBox<>();
         btnCodificar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,26 +73,42 @@ public class frame1 extends javax.swing.JFrame {
         ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnCodificar.setText("Codificar");
+        btnCodificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCodificarActionPerformed(evt);
+            }
+        });
+
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCodificar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtBits, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(193, 193, 193)
-                            .addComponent(jLabel2))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(193, 193, 193)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLimpar)
+                        .addGap(21, 21, 21)
+                        .addComponent(btnCodificar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtBits, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,7 +121,9 @@ public class frame1 extends javax.swing.JFrame {
                     .addComponent(txtBits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(btnCodificar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCodificar)
+                    .addComponent(btnLimpar))
                 .addGap(29, 29, 29))
         );
 
@@ -92,62 +131,79 @@ public class frame1 extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public frame1(String applicationTitle, String chartTitle) {
+    private void btnCodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCodificarActionPerformed
+        gerarGrafico();
+    }//GEN-LAST:event_btnCodificarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        txtBits.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
+
+    public frame1(String applicationTitle, String chartTitle, String metodo, String bits) {
 
         super(applicationTitle);
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 chartTitle,
                 "Tempo",
                 "Tensão",
-                createDataset(),
+                createDataset(metodo,bits),
                 PlotOrientation.VERTICAL,
                 true, true, false);
 
         ChartPanel chartPanel = new ChartPanel(xylineChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
+        chartPanel.setPreferredSize(new java.awt.Dimension(700, 312));
         final XYPlot plot = xylineChart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.RED);
-      //  renderer.setSeriesPaint(1, Color.GREEN);
+        //  renderer.setSeriesPaint(1, Color.GREEN);
         renderer.setSeriesPaint(2, Color.YELLOW);
-        renderer.setSeriesStroke(0, new BasicStroke(7.1f));
-       // renderer.setSeriesStroke(1, new BasicStroke(3.0f));
-       // renderer.setSeriesStroke(2, new BasicStroke(2.0f));
+        renderer.setSeriesStroke(0, new BasicStroke(4.1f));
+        // renderer.setSeriesStroke(1, new BasicStroke(3.0f));
+        // renderer.setSeriesStroke(2, new BasicStroke(2.0f));
         plot.setRenderer(renderer);
         setContentPane(chartPanel);
     }
 
-    private XYDataset createDataset() {
-//        final XYSeries firefox = new XYSeries("Firefox");
-//        firefox.add(1.0, 1.0);
-//        firefox.add(2.0, 4.0);
-//        firefox.add(3.0, 3.0);
-        Conversor c = new Conversor();
-        final XYSeries chrome = new XYSeries("Sinal");
+    private XYDataset createDataset(String met,String bits) {
+
+        final XYSeries grafico = new XYSeries("Sinal");
         ArrayList<pontos> list = new ArrayList<>();
-        
-        list = c.converter();
-        for(int a=0;a<list.size();a++){
-           float x = list.get(a).getX();
-           float y =  list.get(a).getY();
-           chrome.add(x, y);
+        Conversor c = new Conversor();
+
+        list = c.converter(met,bits);
+
+        for (int a = 0; a < list.size(); a++) {
+            float x = list.get(a).getX();
+            float y = list.get(a).getY();
+            grafico.add(x, y);
         }
-        
-       // chrome.add(1, 1);
-       // chrome.add(2, 1);
-       // chrome.add(2, -1);
-       // chrome.add(2, -1);
-        final XYSeries iexplorer = new XYSeries("InternetExplorer");;
-        iexplorer.add(0.0, 0.0);
-        iexplorer.add(10.0, 0.0);
+
+        final XYSeries linha = new XYSeries("Linha 0v");
+        linha.add(0.0, 0.0);
+        linha.add(10.0, 0.0);
+
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        //dataset.addSeries(firefox);
-        dataset.addSeries(chrome);
-        dataset.addSeries(iexplorer);
+        dataset.addSeries(grafico);
+        dataset.addSeries(linha);
+
         return dataset;
     }
 
-    
+    public void gerarGrafico() {
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                
+                String bits = txtBits.getText();
+
+                frame1 chart = new frame1("Decodificador", "Gráfico: "+metodo, metodo,bits);
+                chart.pack();
+                RefineryUtilities.centerFrameOnScreen(chart);
+                chart.setVisible(true);
+
+            }
+        });
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -172,26 +228,13 @@ public class frame1 extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                new frame1().setVisible(true);
-                
-                frame1 chart = new frame1("Decodificador", "Gráfico");
-                chart.pack();
-                RefineryUtilities.centerFrameOnScreen(chart);
-                chart.setVisible(true);
-                 
-
-            }
-        });
+        new frame1().setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBox;
     private javax.swing.JButton btnCodificar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtBits;

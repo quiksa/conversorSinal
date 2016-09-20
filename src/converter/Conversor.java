@@ -34,7 +34,7 @@ public class Conversor {
         }
         System.out.println("'" + txt + "' to binary: " + binary);
 
-        p = RZ(binary);
+        p = DIFMANCHESTER(binary);
 
         return p;
     }
@@ -71,7 +71,7 @@ public class Conversor {
 
         }
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> NRZL(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -110,7 +110,7 @@ public class Conversor {
 
         }
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> NRZI(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -168,7 +168,7 @@ public class Conversor {
 
         }
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> RZ(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -227,7 +227,7 @@ public class Conversor {
 
         }//terminar
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> MANCHESTER(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -287,67 +287,133 @@ public class Conversor {
 
         }
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> DIFMANCHESTER(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "010011";
-        //bt.toString();
+        String bits = "0100110101";
+//        //bt.toString();
+
+        pontos p = new pontos(0, 1);
+        pontos p0 = new pontos(0, -1);
+        pontos p1 = new pontos((float) 0.5, -1);
+        pontos p2 = new pontos((float) 0.5, 1);
+        pontos p3 = new pontos(1, 1);
+        listPontos.add(p);
+        listPontos.add(p0);
+        listPontos.add(p1);
+        listPontos.add(p2);
+        listPontos.add(p3);
 
         boolean bool = false;
-        for (int x = 0; x < bits.length(); x++) {
+        for (int x = 0; x < bits.length() - 1; x++) {
             System.out.println("bit posicao x: " + bits.charAt(x));
-            //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
+            System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
 
-            if (bits.charAt(x) == '0') {
+            if (bits.charAt(x + 1) == '0') {
+                if (bool == false) {
+                    // sinal 0 up
+                    pontos p5 = new pontos();
+                    p5.setX(x + 1);
+                    p5.setY(-1);
+                    listPontos.add(p5);
 
-                pontos p1 = new pontos();
-                p1.setX(x);
-                p1.setY(1);
-                listPontos.add(p1);
+                    pontos p6 = new pontos();
+                    p6.setX((float) (x + 1.5));
+                    p6.setY(-1);
+                    listPontos.add(p6);
 
-                pontos p2 = new pontos();
-                p2.setX(x + (float) 0.5);
-                p2.setY(1);
-                listPontos.add(p2);
+                    pontos p8 = new pontos();
+                    p8.setX((float) (x + 1.5));
+                    p8.setY(1);
+                    listPontos.add(p8);
 
-                pontos p3 = new pontos();
-                p3.setX(x + (float) 0.5);
-                p3.setY(-1);
-                listPontos.add(p3);
+                    pontos p9 = new pontos();
+                    p9.setX((float) (x + 2));
+                    p9.setY(1);
+                    listPontos.add(p9);
 
-                pontos p4 = new pontos();
-                p4.setX((float) (x + 1));
-                p4.setY(-1);
-                listPontos.add(p4);
+                } else {
+                    // sinal 0 down
+                    pontos p5 = new pontos();
+                    p5.setX(x);
+                    p5.setY(1);
+                    listPontos.add(p5);
+
+                    pontos p6 = new pontos();
+                    p6.setX(x + 1);
+                    p6.setY(1);
+                    listPontos.add(p6);
+
+                    pontos p8 = new pontos();
+                    p8.setX((float) (x + 1.5));
+                    p8.setY(1);
+                    listPontos.add(p8);
+
+                    pontos p9 = new pontos();
+                    p9.setX((float) (x + 1.5));
+                    p9.setY(-1);
+                    listPontos.add(p9);
+
+                    pontos p7 = new pontos();
+                    p7.setX((float) (x + 2));
+                    p7.setY(-1);
+                    listPontos.add(p7);
+                }
+
+            } else if (bool == false) {
+                //sinal 1 down
+                pontos p5 = new pontos();
+                p5.setX(x + 1);
+                p5.setY(1);
+                listPontos.add(p5);
+
+                pontos p6 = new pontos();
+                p6.setX((float) (x + 1.5));
+                p6.setY(1);
+                listPontos.add(p6);
+
+                pontos p7 = new pontos();
+                p7.setX((float) (x + 1.5));
+                p7.setY(-1);
+                listPontos.add(p7);
+
+                pontos p8 = new pontos();
+                p8.setX((float) (x + 2));
+                p8.setY(-1);
+                listPontos.add(p8);
+
+                bool = true;
 
             } else {
-
+                //sinal 1 up
                 pontos p5 = new pontos();
-                p5.setX((float) (x));
+                p5.setX(x + 1);
                 p5.setY(-1);
                 listPontos.add(p5);
 
                 pontos p6 = new pontos();
-                p6.setX((float) (x + 0.5));
+                p6.setX((float) (x + 1.5));
                 p6.setY(-1);
                 listPontos.add(p6);
 
                 pontos p7 = new pontos();
-                p7.setX((float) (x + 0.5));
+                p7.setX((float) (x + 1.5));
                 p7.setY(1);
                 listPontos.add(p7);
 
                 pontos p8 = new pontos();
-                p8.setX((float) (x + 1));
+                p8.setX((float) (x + 2));
                 p8.setY(1);
                 listPontos.add(p8);
-            }
 
+                bool = false;
+            }
         }
+
         return listPontos;
-    } //terminar
+    } //testar
 
     public ArrayList<pontos> AMI(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -398,7 +464,7 @@ public class Conversor {
 
         }
         return listPontos;
-    } //quase pronto
+    } //testar
 
     public ArrayList<pontos> PSEUDOTERNARY(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -459,7 +525,7 @@ public class Conversor {
 
         }
         return listPontos;
-    }
+    } //testar
 
     public ArrayList<pontos> _4B5B(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();

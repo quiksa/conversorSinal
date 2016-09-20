@@ -34,7 +34,7 @@ public class Conversor {
         }
         System.out.println("'" + txt + "' to binary: " + binary);
 
-        p = PSEUDOTERNARY(binary);
+        p = RZ(binary);
 
         return p;
     }
@@ -173,60 +173,61 @@ public class Conversor {
     public ArrayList<pontos> RZ(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "01001110";
+        String bits = "011001";
         //bt.toString();
 
-        pontos p = new pontos(0, 1);
-        listPontos.add(p);
-        boolean bool = false;
-        for (int x = 0; x < bits.length() - 1; x++) {
+        for (int x = 0; x < bits.length(); x++) {
             System.out.println("bit posicao x: " + bits.charAt(x));
-            System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
 
-            if (bits.charAt(x + 1) == '0') {
-                //desce
-                if (bool != false) {
-                    pontos p1 = new pontos();
-                    p1.setX(x + 2);
-                    p1.setY(-1);
-                    listPontos.add(p1);
-                } else {
-                    pontos p2 = new pontos();
-                    p2.setX(x + 2);
-                    p2.setY(1);
-                    listPontos.add(p2);
-                }
+            if (bits.charAt(x) == '0') {
 
-            } else if (bits.charAt(x + 1) == '1' && bool == false) {
-                //bit 1 desce 
+                pontos p1 = new pontos();
+                p1.setX(x);
+                p1.setY(-1);
+                listPontos.add(p1);
+
+                pontos p2 = new pontos();
+                p2.setX((float) (x + 0.5));
+                p2.setY(-1);
+                listPontos.add(p2);
+
                 pontos p3 = new pontos();
-                p3.setX(x + 1);
-                p3.setY(1);
+                p3.setX((float) (x + 0.5));
+                p3.setY(0);
                 listPontos.add(p3);
 
                 pontos p4 = new pontos();;
                 p4.setX(x + 1);
-                p4.setY(-1);
+                p4.setY(0);
                 listPontos.add(p4);
-                bool = true;
 
             } else {
-                //bit 1 sobe
+
                 pontos p5 = new pontos();
-                p5.setX(x + 1);
-                p5.setY(-1);
+                p5.setX(x);
+                p5.setY(1);
                 listPontos.add(p5);
 
                 pontos p6 = new pontos();;
-                p6.setX(x + 1);
+                p6.setX((float) (x + 0.5));
                 p6.setY(1);
                 listPontos.add(p6);
-                bool = false;
+
+                pontos p7 = new pontos();;
+                p7.setX((float) (x + 0.5));
+                p7.setY(0);
+                listPontos.add(p7);
+
+                pontos p8 = new pontos();;
+                p8.setX(x + 1);
+                p8.setY(0);
+                listPontos.add(p8);
+
             }
 
-        }
+        }//terminar
         return listPontos;
-    }//terminar
+    }
 
     public ArrayList<pontos> MANCHESTER(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
@@ -435,7 +436,7 @@ public class Conversor {
                     p2.setX(x + 1);
                     p2.setY(-1);
                     listPontos.add(p2);
-                    
+
                     pontos p3 = new pontos();
                     p3.setX(x + 1);
                     p3.setY(0);
@@ -458,9 +459,9 @@ public class Conversor {
 
         }
         return listPontos;
-    } 
-    
-     public ArrayList<pontos> _4B5B(StringBuilder bt) {
+    }
+
+    public ArrayList<pontos> _4B5B(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
         String bits = "0011011001";
@@ -496,7 +497,7 @@ public class Conversor {
                     p2.setX(x + 1);
                     p2.setY(-1);
                     listPontos.add(p2);
-                    
+
                     pontos p3 = new pontos();
                     p3.setX(x + 1);
                     p3.setY(0);
@@ -520,8 +521,8 @@ public class Conversor {
         }
         return listPontos;
     } //terminar
-     
-     public ArrayList<pontos> _2B1Q(StringBuilder bt) {
+
+    public ArrayList<pontos> _2B1Q(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
         String bits = "010010";
@@ -557,7 +558,7 @@ public class Conversor {
                     p2.setX(x + 1);
                     p2.setY(-1);
                     listPontos.add(p2);
-                    
+
                     pontos p3 = new pontos();
                     p3.setX(x + 1);
                     p3.setY(0);

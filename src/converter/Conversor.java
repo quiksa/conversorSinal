@@ -581,21 +581,67 @@ public class Conversor {
 
         String bits = bt.toString();
         
+        StringBuilder novaSequencia = new StringBuilder();
+        
         ArrayList<String> strings = new ArrayList<String>();
+        //quebra string numa sequencia de 4 bits
         int index = 0;
         while (index < bits.length()) {
             strings.add(bits.substring(index, Math.min(index + 4, bits.length())));
             index += 4;
         }
-
+        //constroi a nova sequencia de bits
+        for(int y=0;y<strings.size();y++){
+            System.out.println("sequencia 4 de bits: "+strings.get(y).toString());
+            
+            if(strings.get(y).toString().equals("0000")){
+                novaSequencia.append("11110");
+            }else if(strings.get(y).toString().equals("0001")){
+                novaSequencia.append("01001");
+            }else if(strings.get(y).toString().equals("0010")){
+                novaSequencia.append("10100");
+            }else if(strings.get(y).toString().equals("0011")){
+                novaSequencia.append("10101");
+            }else if(strings.get(y).toString().equals("0100")){
+                novaSequencia.append("01010");
+            }else if(strings.get(y).toString().equals("0101")){
+                novaSequencia.append("01011");
+            }else if(strings.get(y).toString().equals("0110")){
+                novaSequencia.append("01110");
+            }else if(strings.get(y).toString().equals("0111")){
+                novaSequencia.append("01111");
+            }else if(strings.get(y).toString().equals("1000")){
+                novaSequencia.append("10010");
+            }else if(strings.get(y).toString().equals("1001")){
+                novaSequencia.append("10011");
+            }else if(strings.get(y).toString().equals("1010")){
+                novaSequencia.append("10110");
+            }else if(strings.get(y).toString().equals("1011")){
+                novaSequencia.append("10111");
+            }else if(strings.get(y).toString().equals("1100")){
+                novaSequencia.append("11010");
+            }else if(strings.get(y).toString().equals("1101")){
+                novaSequencia.append("11011");
+            }else if(strings.get(y).toString().equals("1110")){
+                novaSequencia.append("11100");
+            }else if(strings.get(y).toString().equals("1111")){
+                novaSequencia.append("11101");
+            }
+        }
+        
+        
+        System.out.println("novaSequencia:"+novaSequencia.toString());
+        
+        String bitsSequence = novaSequencia.toString();
+        
         pontos p = new pontos(0, 1);
         listPontos.add(p);
         boolean bool = false;
-        for (int x = 0; x < bits.length() - 1; x++) {
-            System.out.println("bit posicao x: " + bits.charAt(x));
-            System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
+        for (int x = 0; x < bitsSequence.length() - 1; x++) {
+            System.out.println("bit posicao x: " + bitsSequence.charAt(x));
+            System.out.println("bit posicao x+1: " + bitsSequence.charAt(x + 1));
 
-            if (bits.charAt(x + 1) == '0') {
+            if (bitsSequence.charAt(x + 1) == '0') {
                 //desce
                 if (bool != false) {
                     pontos p1 = new pontos();
@@ -609,7 +655,7 @@ public class Conversor {
                     listPontos.add(p2);
                 }
 
-            } else if (bits.charAt(x + 1) == '1' && bool == false) {
+            } else if (bitsSequence.charAt(x + 1) == '1' && bool == false) {
                 //bit 1 desce 
                 pontos p3 = new pontos();
                 p3.setX(x + 1);

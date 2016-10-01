@@ -192,7 +192,7 @@ public class frame1 extends javax.swing.JFrame {
                 
                 String bits = txtBits.getText();
 
-                frame1 chart = new frame1("Decodificador", "Gráfico: "+metodo, metodo,bits);
+                frame1 chart = new frame1("Decodificador",  "Gráfico: "+metodo, metodo,bits);
                 chart.pack();
                 RefineryUtilities.centerFrameOnScreen(chart);
                 chart.setVisible(true);

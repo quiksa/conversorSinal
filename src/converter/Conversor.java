@@ -5,6 +5,7 @@
  */
 package converter;
 
+import java.awt.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -14,29 +15,77 @@ import javax.swing.JOptionPane;
  */
 public class Conversor {
 
-    public ArrayList<pontos> converter() {
+    public ArrayList<pontos> converter(String metodo, String bits) {
 
-        ArrayList<pontos> p = new ArrayList<>();
+        ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String txt = JOptionPane.showInputDialog("Digite o texto");
+        StringBuilder sb = new StringBuilder();
+        sb.append(bits);
 
-        System.out.println("texto:" + txt);
-
-        byte[] bytes = txt.getBytes();
-        StringBuilder binary = new StringBuilder();
-        for (byte b : bytes) {
-            int val = b;
-            for (int i = 0; i < 8; i++) {
-                binary.append((val & 128) == 0 ? 0 : 1);
-                val <<= 1;
-            }
-            //binary.append(' ');
+//        String txt = JOptionPane.showInputDialog("Digite o texto");
+//
+//        System.out.println("texto:" + txt);
+//
+//        byte[] bytes = txt.getBytes();
+//        StringBuilder binary = new StringBuilder();
+//        for (byte b : bytes) {
+//            int val = b;
+//            for (int i = 0; i < 8; i++) {
+//                binary.append((val & 128) == 0 ? 0 : 1);
+//                val <<= 1;
+//            }
+//            //binary.append(' ');
+//        }
+//        System.out.println("'" + txt + "' to binary: " + binary);
+//        if (metodo.equalsIgnoreCase("NRZ")) {
+//            listPontos = NRZ(sb);
+//        }
+        switch (metodo.toString()) {
+            case "NRZ":
+                System.out.println("NRZ");
+                listPontos = NRZ(sb);
+                break;
+            case "NRZ-L":
+                System.out.println("NRZL");
+                listPontos = NRZL(sb);
+                break;
+            case "NRZ-I":
+                System.out.println("NRZI");
+                listPontos = NRZI(sb);
+                break;
+            case "RZ":
+                System.out.println("RZ");
+                listPontos = RZ(sb);
+                break;
+            case "MANCHESTER":
+                System.out.println("MANCHESTER");
+                listPontos = MANCHESTER(sb);
+                break;
+            case "DIFFERENTIAL MANCHESTER":
+                System.out.println("DIFFERENTIAL MANCHESTER");
+                listPontos = DIFMANCHESTER(sb);
+                break;
+            case "AMI":
+                System.out.println("AMI");
+                listPontos = AMI(sb);
+                break;
+            case "PSEUDOTERNARY":
+                System.out.println("PSEUDOTERNARY");
+                listPontos = PSEUDOTERNARY(sb);
+                break;
+            case "4B/5B":
+                System.out.println("4B/5B");
+                listPontos = _4B5B(sb);
+                break;
+            case "2B/1Q":
+                System.out.println("2B/1Q");
+                listPontos = _2B1Q(sb);
+                break;
+            default:
+                System.out.println("Esta opcão não é valida");
         }
-        System.out.println("'" + txt + "' to binary: " + binary);
 
-        p = DIFMANCHESTER(binary);
-
-        return p;
+        return listPontos;
     }
 
     public ArrayList<pontos> NRZ(StringBuilder bt) {
@@ -115,8 +164,8 @@ public class Conversor {
     public ArrayList<pontos> NRZI(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "01001110";
-        //bt.toString();
+        // String bits = "01001110";
+        String bits = bt.toString();
 
         pontos p = new pontos(0, 1);
         listPontos.add(p);
@@ -173,8 +222,8 @@ public class Conversor {
     public ArrayList<pontos> RZ(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "011001";
-        //bt.toString();
+        //String bits = "011001";
+        String bits = bt.toString();
 
         for (int x = 0; x < bits.length(); x++) {
             System.out.println("bit posicao x: " + bits.charAt(x));
@@ -232,8 +281,8 @@ public class Conversor {
     public ArrayList<pontos> MANCHESTER(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "010011";
-        //bt.toString();
+        //String bits = "010011";
+        String bits = bt.toString();
 
         boolean bool = false;
         for (int x = 0; x < bits.length(); x++) {
@@ -292,8 +341,8 @@ public class Conversor {
     public ArrayList<pontos> DIFMANCHESTER(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "0100110101";
-//        //bt.toString();
+        //String bits = "0100110101";
+        String bits = bt.toString();
 
         pontos p = new pontos(0, 1);
         pontos p0 = new pontos(0, -1);
@@ -418,8 +467,8 @@ public class Conversor {
     public ArrayList<pontos> AMI(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "010010";
-        //bt.toString();
+        //String bits = "010010";
+        String bits = bt.toString();
 
         boolean bool = false;
         for (int x = 0; x < bits.length(); x++) {
@@ -469,8 +518,8 @@ public class Conversor {
     public ArrayList<pontos> PSEUDOTERNARY(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "010010";
-        //bt.toString();
+        //String bits = "010010";
+        String bits = bt.toString();
 
         boolean bool = false;
         for (int x = 0; x < bits.length(); x++) {
@@ -530,58 +579,61 @@ public class Conversor {
     public ArrayList<pontos> _4B5B(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "0011011001";
-        //bt.toString();
+        String bits = bt.toString();
+        
+        ArrayList<String> strings = new ArrayList<String>();
+        int index = 0;
+        while (index < bits.length()) {
+            strings.add(bits.substring(index, Math.min(index + 4, bits.length())));
+            index += 4;
+        }
 
+        pontos p = new pontos(0, 1);
+        listPontos.add(p);
         boolean bool = false;
-        for (int x = 0; x < bits.length(); x++) {
+        for (int x = 0; x < bits.length() - 1; x++) {
             System.out.println("bit posicao x: " + bits.charAt(x));
-            //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
+            System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
 
-            if (bits.charAt(x) == '0') {
-                //verifica se bool = false, se sim, cria pontos acima de 0v
-                if (bool == false) {
+            if (bits.charAt(x + 1) == '0') {
+                //desce
+                if (bool != false) {
                     pontos p1 = new pontos();
-                    p1.setX(x);
-                    p1.setY(1);
-                    listPontos.add(p1);
-
-                    pontos p2 = new pontos();
-                    p2.setX(x + 1);
-                    p2.setY(1);
-                    listPontos.add(p2);
-                    bool = true;
-
-                } else {
-                    //cria pontos abaixo de 0v
-                    pontos p1 = new pontos();
-                    p1.setX(x);
+                    p1.setX(x + 2);
                     p1.setY(-1);
                     listPontos.add(p1);
-
+                } else {
                     pontos p2 = new pontos();
-                    p2.setX(x + 1);
-                    p2.setY(-1);
+                    p2.setX(x + 2);
+                    p2.setY(1);
                     listPontos.add(p2);
-
-                    pontos p3 = new pontos();
-                    p3.setX(x + 1);
-                    p3.setY(0);
-                    listPontos.add(p3);
-                    bool = false;
                 }
 
-            } else {
-                // cria pontos 0v
+            } else if (bits.charAt(x + 1) == '1' && bool == false) {
+                //bit 1 desce 
                 pontos p3 = new pontos();
-                p3.setX(x);
-                p3.setY(0);
+                p3.setX(x + 1);
+                p3.setY(1);
                 listPontos.add(p3);
 
-                pontos p4 = new pontos();
+                pontos p4 = new pontos();;
                 p4.setX(x + 1);
-                p4.setY(0);
+                p4.setY(-1);
                 listPontos.add(p4);
+                bool = true;
+
+            } else {
+                //bit 1 sobe
+                pontos p5 = new pontos();
+                p5.setX(x + 1);
+                p5.setY(-1);
+                listPontos.add(p5);
+
+                pontos p6 = new pontos();;
+                p6.setX(x + 1);
+                p6.setY(1);
+                listPontos.add(p6);
+                bool = false;
             }
 
         }
@@ -591,60 +643,290 @@ public class Conversor {
     public ArrayList<pontos> _2B1Q(StringBuilder bt) {
         ArrayList<pontos> listPontos = new ArrayList<>();
 
-        String bits = "010010";
-        //bt.toString();
+        String bits = bt.toString();
+                //"0010011101";
 
-        boolean bool = false;
-        for (int x = 0; x < bits.length(); x++) {
+        ArrayList<String> strings = new ArrayList<String>();
+        int index = 0;
+        while (index < bits.length()) {
+            strings.add(bits.substring(index, Math.min(index + 2, bits.length())));
+            index += 2;
+        }
+
+        //bt.toString();
+        //definicção do ponto de partida
+        pontos p1 = new pontos();
+        p1.setX(0);
+        p1.setY(3);
+        listPontos.add(p1);
+
+        pontos p2 = new pontos();
+        p2.setX(1);
+        p2.setY(3);
+        listPontos.add(p2);
+
+        boolean sinalPositivoNegativo = true;
+
+        for (int x = 0; x < strings.size() - 1; x++) {
             System.out.println("bit posicao x: " + bits.charAt(x));
             //System.out.println("bit posicao x+1: " + bits.charAt(x + 1));
 
-            if (bits.charAt(x) == '0') {
-                //verifica se bool = false, se sim, cria pontos acima de 0v
-                if (bool == false) {
-                    pontos p1 = new pontos();
-                    p1.setX(x);
-                    p1.setY(1);
-                    listPontos.add(p1);
+            if (strings.get(x).equals("00") && strings.get(x + 1).equals("00")) {
 
-                    pontos p2 = new pontos();
-                    p2.setX(x + 1);
-                    p2.setY(1);
-                    listPontos.add(p2);
-                    bool = true;
-
-                } else {
-                    //cria pontos abaixo de 0v
-                    pontos p1 = new pontos();
-                    p1.setX(x);
-                    p1.setY(-1);
-                    listPontos.add(p1);
-
-                    pontos p2 = new pontos();
-                    p2.setX(x + 1);
-                    p2.setY(-1);
-                    listPontos.add(p2);
-
-                    pontos p3 = new pontos();
-                    p3.setX(x + 1);
-                    p3.setY(0);
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +1);
                     listPontos.add(p3);
-                    bool = false;
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
                 }
 
-            } else {
-                // cria pontos 0v
-                pontos p3 = new pontos();
-                p3.setX(x);
-                p3.setY(0);
-                listPontos.add(p3);
+            } else if (strings.get(x).equals("00") && strings.get(x + 1).equals("01")) {
 
-                pontos p4 = new pontos();
-                p4.setX(x + 1);
-                p4.setY(0);
-                listPontos.add(p4);
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+
+            } else if (strings.get(x).equals("00") && strings.get(x + 1).equals("10")) {
+
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+
+            } else if (strings.get(x).equals("00") && strings.get(x + 1).equals("11")) {
+
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+            } else if(strings.get(x).equals("01") && strings.get(x + 1).equals("00")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("01") && strings.get(x + 1).equals("01")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("01") && strings.get(x + 1).equals("10")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
+            } else if(strings.get(x).equals("01") && strings.get(x + 1).equals("11")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
+            } else if(strings.get(x).equals("10") && strings.get(x + 1).equals("00")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("10") && strings.get(x + 1).equals("01")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("10") && strings.get(x + 1).equals("10")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
+            } else if(strings.get(x).equals("10") && strings.get(x + 1).equals("11")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
+            } else if(strings.get(x).equals("11") && strings.get(x + 1).equals("00")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("11") && strings.get(x + 1).equals("01")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                } else {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                }
+                
+            } else if(strings.get(x).equals("11") && strings.get(x + 1).equals("10")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +1);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +1);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
+            } else if(strings.get(x).equals("11") && strings.get(x + 1).equals("11")){
+                
+                if (sinalPositivoNegativo == true) {
+                    pontos p3 = new pontos(x + 1, -3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, -3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = false;
+                } else {
+                    pontos p3 = new pontos(x + 1, +3);
+                    listPontos.add(p3);
+                    pontos p4 = new pontos(x + 2, +3);
+                    listPontos.add(p4);
+                    sinalPositivoNegativo = true;
+                }
+                
             }
-
         }
         return listPontos;
     } //terminar

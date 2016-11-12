@@ -179,6 +179,7 @@ public class Conversor {
                 if (bool != false) {
                     pontos p1 = new pontos();
                     p1.setX(x + 2);
+                    System.out.println("valor de x:"+x);
                     p1.setY(-1);
                     listPontos.add(p1);
                 } else {
@@ -195,7 +196,7 @@ public class Conversor {
                 p3.setY(1);
                 listPontos.add(p3);
 
-                pontos p4 = new pontos();;
+                pontos p4 = new pontos();
                 p4.setX(x + 1);
                 p4.setY(-1);
                 listPontos.add(p4);
